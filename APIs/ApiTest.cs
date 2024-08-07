@@ -56,10 +56,10 @@ namespace CsharpPlaywrith.APIs
             //var json = JArray.Parse(responseBody);
             
 
-            using StreamReader reader = new(responseBody);
-            string jsonString = reader.ReadToEnd();
-            var json = JsonConvert.DeserializeObject<Object>(jsonString);
-            json = JObject.Parse(responseBody);
+            // StreamReader reader = new(responseBody);
+            //string jsonString = reader.ReadToEnd();
+            //var json = JsonConvert.DeserializeObject<Object>(jsonString);
+            //json = JObject.Parse(responseBody);
 
 
         }
