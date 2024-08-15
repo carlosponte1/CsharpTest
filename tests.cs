@@ -21,7 +21,7 @@ public class ExampleTest : PageTest
 
 
    [Test]
-   [Ignore("ignored")]
+   //[Ignore("ignored")]
     public async Task HasTitle()
     {
         await _loginPage.GotoLogin();
@@ -30,7 +30,7 @@ public class ExampleTest : PageTest
     }
 
     [Test]
-    [Ignore("ignored")]
+    //[Ignore("ignored")]
     public async Task AccesSiteLogin()
     {
         await _loginPage.GotoLogin();
@@ -41,7 +41,7 @@ public class ExampleTest : PageTest
 
     }
     [Test]
-    [Ignore("ignored")]
+    //[Ignore("ignored")]
     public async Task AccesDeniedLogin()
     {
         await _loginPage.GotoLogin();
