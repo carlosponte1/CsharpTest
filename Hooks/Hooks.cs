@@ -30,6 +30,7 @@ namespace CsharpPlaywrith.Hooks
         {
             _mockAPI.StartMockServer();
             _objectContainer.RegisterInstanceAs(_mockAPI);
+
             var pw = await Playwright.CreateAsync();
             var browser = await pw.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false });
             var browserContext = await browser.NewContextAsync(new BrowserNewContextOptions { BypassCSP = true });

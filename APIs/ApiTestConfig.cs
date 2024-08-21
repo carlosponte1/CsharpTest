@@ -38,8 +38,18 @@ using WireMock.Server;
                     Response.Create()
                     .WithStatusCode(200)
                     .WithHeader("Content-Type", "application/json")
-                    .WithBody("{ \"token\": \"mocked_token\" }"));
-        }
+                    .WithBody("{ \"token\": 8888 }"));
+        _mockServer
+                .Given(
+                    Request.Create().WithPath("/booking").UsingGet())
+                .RespondWith(
+                    Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBody("{ \"token\": 8888 }"));
+
+
+    }
 
     public void StopMockServer()
     {

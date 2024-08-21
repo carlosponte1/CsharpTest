@@ -13,41 +13,53 @@ using Newtonsoft.Json;
 namespace CsharpPlaywrith.APIs
 {
     [TestFixture]
-    internal class ApiTest
+    public class ApiTest
     {
-        private HttpClient _client;
+        public HttpClient _client;
         private string _token;
-        [SetUp]
-        public void Setup()
-        {
+         
+        
+        public  ApiTest()
+        {   
+           
             _client = new HttpClient();
-            _client.BaseAddress = new System.Uri("https://restful-booker.herokuapp.com");
+            _client.BaseAddress = new Uri("https://restful-booker.herokuapp.com");
+
         }
 
-        [Test]
-        public async Task SendAndGetRequestToken()
+        public async Task<HttpResponseMessage> SendRequestAsync()
         {
+           
             var endpoint = "/auth";
-            var requestData = new StringContent("{\"username\":\"admin\",\"password\":\"password123\"}", System.Text.Encoding.UTF8, "application/json");
+            var requestData = new StringContent("{\"username\":\"admin\",\"password\":\"password123\"}", Encoding.UTF8, "application/json");
+            return await _client.PostAsync(endpoint, requestData);
+        }
 
-             var response = await _client.PostAsync(endpoint, requestData);
-            // Assert
+        public async Task<string> GetResponseContentAsync(HttpResponseMessage response)
+        {
             response.EnsureSuccessStatusCode();
-            //response.StatusCode.Should().Be(200,because:"succes");
-            
-            var responseBody = await response.Content.ReadAsStringAsync();
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        public void ValidateToken(string responseBody)
+        {
             var json = JObject.Parse(responseBody);
             json["token"].Should().NotBeNull();
-
-            
             _token = json["token"].ToString();
-            System.Console.WriteLine("Token: " + _token+" "+response.StatusCode);
-
-
+            Console.WriteLine("Token: " + _token);
         }
 
         [Test]
-        public async Task GetBookingID()
+        public async Task ExecuteTestScenarioApiAuth()
+        {
+            // Ejecuta el flujo completo
+            var response = await SendRequestAsync();
+            var responseBody = await GetResponseContentAsync(response);
+            ValidateToken(responseBody); // Llama a la función que ejecuta todo el flujo
+        }
+
+        [Test]
+        public async Task SendGetBookingID()
         {
             // Configuración del endpoint
             var endpoint = "/booking";
@@ -84,7 +96,7 @@ namespace CsharpPlaywrith.APIs
 
 
 
-        [TearDown]
+        [OneTimeTearDown]
         public void Teardown()
         {
             _client.Dispose();

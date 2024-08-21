@@ -12,7 +12,7 @@ using TechTalk.SpecFlow;
 namespace WireMockExample 
 {
     [TestFixture]
-    public class ApiTests 
+    public class MockApiTests 
     {
      
         private readonly ApiTestConfig _mockAPI = new ApiTestConfig();
@@ -40,8 +40,15 @@ namespace WireMockExample
             json["token"].Should().NotBeNull();
             System.Console.WriteLine("Mocked Token: " + json["token"]);
         }
+        [Test]
+        public async Task AutoMocklApi()
+        {
+            await StartServer();
+            await   SendAuthRequest();
+            await VerifyResponse(); 
+            
 
-
+        }
 
 
 

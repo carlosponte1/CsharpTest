@@ -6,34 +6,34 @@ using WireMockExample;
 namespace CsharpPlaywrith.Steps
 {
     [Binding]
-    public class MockApiStepDefinitions : ApiTests
+    public class MockApiStepDefinitions : MockApiTests
     {
-        ApiTests _Xa = new ApiTests();
+        MockApiTests _ApiMock = new MockApiTests();
 
         [Given(@"auth endpoint its setting up")]
         public async Task GivenAuthEndpointItsSettingUp()
         {
-            await _Xa.StartServer();
+            await _ApiMock.StartServer();
             
         }
 
         [When(@"auth endpoint is sent")]
         public async void WhenAuthEndpointIsSent()
         {
-            await _Xa.SendAuthRequest();
+            await _ApiMock.SendAuthRequest();
             
         }
 
         [Then(@"response has correct token and status")]
         public async void ThenResponseHasCorrectTokenAndStatus()
         {
-            await _Xa.VerifyResponse();
+            await _ApiMock.VerifyResponse();
             
         }
         [AfterScenario]
         public void AfterScenario()
         {
-            _Xa.TearDown();
+            _ApiMock.TearDown();
         }
     }
 }

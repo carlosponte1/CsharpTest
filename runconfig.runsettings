@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RunSettings>
+	<RunConfiguration>
+		<ResultsDirectory>.\TestResults</ResultsDirectory>
+		<TargetPlatform>x64</TargetPlatform>
+		<TargetFrameworkVersion>net5.0</TargetFrameworkVersion>
+	</RunConfiguration>
+	<LoggerRunSettings>
+		<Loggers>
+			<Logger friendlyName="trx" />
+		</Loggers>
+	</LoggerRunSettings>
   <!-- NUnit adapter -->  
   <NUnit>
     <NumberOfTestWorkers>24</NumberOfTestWorkers>
