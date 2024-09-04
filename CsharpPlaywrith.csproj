@@ -11,6 +11,8 @@
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="DotPulsar" Version="3.3.2" />
+    <PackageReference Include="DotPulsar.Extensions.Schemas" Version="0.2.1" />
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
     <PackageReference Include="FluentAssertions.Analyzers" Version="0.33.0">
       <PrivateAssets>all</PrivateAssets>
@@ -28,6 +30,7 @@
     <PackageReference Include="SpecFlow.NUnit" Version="3.9.74" />
     <PackageReference Include="Testcontainers" Version="3.9.0" />
     <PackageReference Include="Testcontainers.MySql" Version="3.9.0" />
+    <PackageReference Include="Testcontainers.Pulsar" Version="3.9.0" />
     <PackageReference Include="WireMock.Net" Version="1.5.62" />
   </ItemGroup>
 

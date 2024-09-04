@@ -6,7 +6,7 @@ using TechTalk.SpecFlow;
 namespace CsharpPlaywrith.Steps 
 {
     [Binding]
-    public class CreateContainerfeatureStepDefinitions : MySqlCont
+    public class CreateContainerfeatureStepDefinitions 
 
     {
         MySqlCont _mysql = new MySqlCont();

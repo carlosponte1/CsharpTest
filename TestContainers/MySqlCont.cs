@@ -1,14 +1,7 @@
-﻿using System;
-using System.Data;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
-using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Containers;
+﻿using System.Data;
 using FluentAssertions;
-using GraphQL.Types.Relay.DataObjects;
 using MySql.Data.MySqlClient;
-using NUnit.Framework;
-using Testcontainers.MySql;
+
 
 namespace CsharpPlaywrith.TestContainers
 {
@@ -61,9 +54,11 @@ namespace CsharpPlaywrith.TestContainers
     ('performance_glitch_user', 'secret_sauce', NULL),
     ('error_user', 'secret_sauce', NULL),
     ('visual_user', 'secret_sauce', NULL);";
-            // command = new MySqlCommand(createTableQuery, connection);
-            //command = new MySqlCommand(insertUsersQuery, connection);
-            using (var command = new MySqlCommand(createTableQuery, connection))
+            command = new MySqlCommand(createTableQuery, connection);
+             await command.ExecuteNonQueryAsync();
+            command = new MySqlCommand(insertUsersQuery, connection);
+            await command.ExecuteNonQueryAsync();
+          /*  using (var command = new MySqlCommand(createTableQuery, connection))
             {
                 await command.ExecuteNonQueryAsync();
             }
@@ -71,7 +66,7 @@ namespace CsharpPlaywrith.TestContainers
             using (var command = new MySqlCommand(insertUsersQuery, connection))
             {
                 await command.ExecuteNonQueryAsync();
-            }
+            }*/
 
 
 
@@ -85,7 +80,7 @@ namespace CsharpPlaywrith.TestContainers
     "problem_user",
     "performance_glitch_user",
     "error_user",
-    "visual_user1"
+    "visual_user"
 };
             foreach (var username in usernames)
             {
