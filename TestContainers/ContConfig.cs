@@ -13,9 +13,10 @@ namespace CsharpPlaywrith.TestContainers
 
     public class ContConfig
     {
-        private IContainer _mysqlContainer, _pulsarContainer;
+        private IContainer _mysqlContainer, _pulsarContainer, _rabbitMqContainer;
         public string _constring;
         public string ServiceUrl;
+        public string RabbitMqConnectionString;
 
         public async Task ContainerSetup()
         {
@@ -66,19 +67,35 @@ namespace CsharpPlaywrith.TestContainers
 
         }
 
-       /* private async Task ExecuteCommandInContainer(string command)
+        /* private async Task ExecuteCommandInContainer(string command)
+         {
+             try
+             {
+                 var result = await _pulsarContainer.ExecAsync(new[] { "/bin/bash", "-c", command });
+                 Console.WriteLine($"Comando ejecutado: {command}\nResultado: {result.ExitCode}");
+             }
+             catch (Exception ex)
+             {
+                 Console.WriteLine($"Error al ejecutar comando en el contenedor: {ex.Message}");
+             }
+         }
+        */
+
+        public async Task SetupRabbitMqContainer()
         {
-            try
-            {
-                var result = await _pulsarContainer.ExecAsync(new[] { "/bin/bash", "-c", command });
-                Console.WriteLine($"Comando ejecutado: {command}\nResultado: {result.ExitCode}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al ejecutar comando en el contenedor: {ex.Message}");
-            }
+            _rabbitMqContainer = new ContainerBuilder()
+                .WithImage("rabbitmq:management")  // Usamos la imagen oficial de RabbitMQ
+                .WithPortBinding(5672, 5672)        // Puerto para enviar/recibir mensajes
+                .WithPortBinding(15672, 15672)       // Puerto para acceder al panel de administración (opcional)
+                .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5672))  // Esperamos hasta que el puerto esté disponible
+                .Build();
+
+            await _rabbitMqContainer.StartAsync();  // Iniciar el contenedor
+            var host = _rabbitMqContainer.Hostname;
+            var port = _rabbitMqContainer.GetMappedPublicPort(5672);
+            RabbitMqConnectionString = $"amqp://guest:guest@{host}:{port}/";  // Guardamos la cadena de conexión
         }
-       */
+
 
 
 
@@ -92,6 +109,7 @@ namespace CsharpPlaywrith.TestContainers
             await _mysqlContainer.DisposeAsync(); 
             await _pulsarContainer.StopAsync();
             await _pulsarContainer.DisposeAsync();
+
 
         }
 
