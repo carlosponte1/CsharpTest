@@ -33,9 +33,11 @@ jobs:
             dotnet test CsharpPlaywrith.sln \
               --configuration Release \
               --settings runconfig.runsettings \
+              --results-directory TestResults \
               --logger "trx;LogFileName=TestResults.trx"
 
       - name: Upload test results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
