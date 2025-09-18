@@ -1,0 +1,43 @@
+name: Manual Test Execution
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-tests:
+    name: Run Playwright Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore CsharpPlaywrith.sln
+
+      - name: Build solution
+        run: dotnet build CsharpPlaywrith.sln --configuration Release
+
+      - name: Install Playwright browsers
+        run: pwsh bin/Release/net8.0/playwright.ps1 install --with-deps
+
+      - name: Run tests
+        run: |
+          mkdir -p TestResults
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24' \
+            dotnet test CsharpPlaywrith.sln \
+              --configuration Release \
+              --settings runconfig.runsettings \
+              --logger "trx;LogFileName=TestResults.trx"
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults
+          if-no-files-found: error
